@@ -2,11 +2,22 @@
 
 if [[ $# -ne 6 ]]
 then
-    echo "Invalid number of arguments"
+    echo "Invalid number of arguments!"
+	echo "1-st argument is the absolute path."
+	echo "2-nd argument is the number of subfolders."
+	echo "3-d argument is a list of English alphabet letters used in folder names (no more than 7 characters)."
+	echo "4-th argument is the number of files in each created folder."
+	echo "5-th argument - the list of English alphabet letters used in the file name and extension (no more than 7 characters for the name, no more than 3 characters for the extension)."
+	echo "6-th argument - file size (in kilobytes, but not more than 100)."
     exit 1
 fi
+path=$1
+if [[ ${1: -1} != "/" ]]
+then
+    path+='/'
+fi
 
-if  [[ ${$1: 0:1} != "/" ]] || ! [[ -d $1 ]]
+if  [[ ${1: 0:1} != "/" ]] || ! [[ -d $1 ]]
 then
     echo "1-th arg: Invalid path or path is not absolute!"
     exit 1
