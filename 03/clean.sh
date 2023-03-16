@@ -1,7 +1,7 @@
 #!/bin/bash
 
 clean_by_logfile () {
-	logs=$(cat log_file | awk '{print $1}')
+	logs=$(cat ../02/log_file | awk '{print $1}')
 	for i in $logs
     do
         if [[ ${i: 0:1 } == "/" ]]
@@ -22,25 +22,31 @@ clean_by_date () {
         last=$(echo $i | awk -F"/" '{ print $NF }')
         if [[ $last =~ "." ]]
         then
-            sudo rm -rf $i
+            sudo rm -cached $i
         fi
     done
 }
 
-
+clean_by_mask () {
+    read -p "Enter mask (format: foldername_160323): " mask
+    symbols=$(echo $mask | awk -F"_" '{ print $1 }')
+    date=$(echo $mask | awk -F"_" '{ print $2 }')
+    sudo rm -rf $(find / -type f -name "*$symbols*$date" 2>/dev/null)
+    sudo rm -rf $(find / -type d -name "*$symbols*$date" 2>/dev/null)
+}
 
 if [[ $1 -eq "1" ]]; then
-	if [[ -e $"log_file" ]]
+	if [[ -e $"../02/log_file" ]]
 	then
 		clean_by_logfile
 	else
-		echo "log file is missing. Add a log file to this directory."
+		echo "log file is missing. Need to create a log file."
 		exit 1
 	fi
 fi
 
 if [[ $1 -eq "2" ]]; then
-	clean_by_date $1
+	clean_by_date 
 fi
 
 if [[ $1 -eq "3" ]]; then
