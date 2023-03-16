@@ -51,7 +51,8 @@ generate () {
         do
             if [[ $(df / -BM | grep "/" | awk -F"M" '{ print $3 }') -le 1024 ]]
             then
-                echo "No available disk space, you have only 1 Gb"
+                echo "The script stopped working"
+                echo "The file system (in the / partition) has only 1 GB of free space."
                 j=$file_n
                 i=$dirs_n
                 continue
